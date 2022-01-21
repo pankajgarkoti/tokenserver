@@ -39,11 +39,11 @@ def get_token(ag_uid, channel):
 
 
 # generate a token and add it to firebase
-def get_token_and_add_to_fb(field_name, channel, uid):
+def get_token_and_add_to_fb(utype, channel, uid):
     try:
         udict = {}
-        udict[field_name] = get_token(uid, channel)
-        udict['last_request'] = firestore.SERVER_TIMESTAMP
+        udict[utype + '_token'] = get_token(uid, channel)
+        udict[utype + '_last_token_request'] = firestore.SERVER_TIMESTAMP
 
         db = firestore.client()
         db.collection('chatRooms').document(channel).update(udict)
@@ -57,7 +57,6 @@ def get_token_and_add_to_fb(field_name, channel, uid):
 
 def index(request, utype, channel, uid):
     is_channel = does_channel_exist_fb(channel)
-    field_name = utype + '_token'
 
     if type(is_channel) == bool:
         if is_channel is False:
@@ -68,7 +67,7 @@ def index(request, utype, channel, uid):
             return JsonResponse(response_data)
 
         else:
-            succeeded = get_token_and_add_to_fb(field_name, channel, uid)
+            succeeded = get_token_and_add_to_fb(utype, channel, uid)
 
             if succeeded is True:
                 response_data = {}
