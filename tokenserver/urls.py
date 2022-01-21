@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('<str:fb_uid>/<int:ag_uid>/<str:channel>/', views.index, name='index'),
+    path('<str:utype>/<str:channel>/<int:uid>/', views.index, name='index'),
 ]
