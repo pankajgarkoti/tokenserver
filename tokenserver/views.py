@@ -33,12 +33,13 @@ def get_token(utype, channel, uid):
     expire_time = 21600  # 6 hrs
     current_timestamp = int(time.time())
     expire_timestamp = current_timestamp + expire_time
-
+    token = RtcTokenBuilder.buildTokenWithUid(app_id, cert, channel, uid, Role_Publisher, expire_timestamp)
+    '''
     if (utype == 'user'):
         token = RtcTokenBuilder.buildTokenWithUid(app_id, cert, channel, uid, Role_Publisher, expire_timestamp)
     elif (utype == 'listener'):
-        token = RtcTokenBuilder.buildTokenWithUid(app_id, cert, channel, uid, Role_Subscriber, expire_timestamp)
-
+        token = RtcTokenBuilder.buildTokenWithUid(app_id, cert, channel, uid, Role_Publisher, expire_timestamp)
+    '''
     return token
 
 
