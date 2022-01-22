@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 import firebase_admin
 from firebase_admin import credentials, firestore
-from .RtcTokenBuilder import RtcTokenBuilder, Role_Publisher
+from .RtcTokenBuilder import RtcTokenBuilder, Role_Publisher, Role_Subscriber
 
 cred = credentials.Certificate('hearus-4f2fe-firebase-adminsdk-37hja-d20110c311.json')
 firebase_admin.initialize_app(cred)
@@ -27,13 +27,17 @@ def does_channel_exist_fb(channel):
 
 
 # returns token
-def get_token(ag_uid, channel):
+def get_token(utype, channel, uid):
     app_id = 'e6ff91cb78314130abfbcbcbde53967b'
     cert = '099723247ea34270900a955a6a70d239'
     expire_time = 21600  # 6 hrs
     current_timestamp = int(time.time())
     expire_timestamp = current_timestamp + expire_time
-    token = RtcTokenBuilder.buildTokenWithUid(app_id, cert, channel, ag_uid, Role_Publisher, expire_timestamp)
+
+    if (utype == 'user'):
+        token = RtcTokenBuilder.buildTokenWithUid(app_id, cert, channel, uid, Role_Publisher, expire_timestamp)
+    elif (utype == 'listener'):
+        token = RtcTokenBuilder.buildTokenWithUid(app_id, cert, channel, uid, Role_Subscriber, expire_timestamp)
 
     return token
 
@@ -42,7 +46,7 @@ def get_token(ag_uid, channel):
 def get_token_and_add_to_fb(utype, channel, uid):
     try:
         udict = {}
-        udict[utype + '_token'] = get_token(uid, channel)
+        udict[utype + '_token'] = get_token(utype, channel, uid)
         udict[utype + '_last_token_request'] = firestore.SERVER_TIMESTAMP
 
         db = firestore.client()
