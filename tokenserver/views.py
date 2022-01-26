@@ -6,11 +6,11 @@ from firebase_admin import credentials, firestore
 from agora_token_builder import RtcTokenBuilder
 
 cred = credentials.Certificate('hearus-4f2fe-firebase-adminsdk-37hja-d20110c311.json')
-firebase_admin.initialize_app(cred)
+firebase = firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 
-# returns true if uid is in cloud firestore and false otherwise
+# returns true if channel name is in cloud firestore and false otherwise
 def does_channel_exist_fb(channel):
     try:
         curr = db.collection(u'chatRooms').document(channel).get()
