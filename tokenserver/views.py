@@ -27,8 +27,8 @@ def does_channel_exist_fb(channel):
 
 # returns token
 def get_token(channel, uid):
-    app_id = 'e6ff91cb78314130abfbcbcbde53967b'
-    cert = '099723247ea34270900a955a6a70d239'
+    app_id = 'e6ff91cb78fdsfsdabfbcbcsdsdsads967b'
+    cert = '09972324dlfkjhsdkfhsdkfhdkfjhdsjkfh39'
     expire_time = 86400  # 24 hrs
     current_timestamp = int(time.time())
     expire_timestamp = current_timestamp + expire_time
